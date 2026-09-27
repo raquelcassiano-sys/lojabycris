@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja by Cris - Espaço Natura & Desapego Feminino</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf4f5',
+                            100: '#fbe8eb',
+                            200: '#f7d5db',
+                            300: '#f0b2bd',
+                            400: '#e58396',
+                            500: '#d55773',
+                            600: '#bf3958',
+                            700: '#9e2942',
+                            800: '#832338',
+                            900: '#6f2132',
+                        },
+                        natura: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfaf8;
+            color: #2c2a29;
+        }
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fcfaf8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f0b2bd;
+            border-radius: 999px;
+        }
+        .store-tab-active {
+            box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-brand-200 selection:text-brand-900">
+
+    <div id="announcementBar" class="bg-brand-900 text-pink-100 text-xs md:text-sm py-2.5 px-4 text-center font-medium tracking-wide flex justify-between items-center border-b border-brand-800 transition-colors duration-300">
+        <div class="flex-1 text-center flex items-center justify-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span id="announcementText">✨ Bem-vinda à Loja by Cris! Espaço Natura em Estoque e Desapego de Moda Exclusivo.</span>
+        </div>
+        <!-- Admin Access Button - ALWAYS REQUIRES PASSWORD -->
+        <button onclick="requireAdminPassword()" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-full transition flex items-center gap-1.5 ml-2 border border-white/20 font-medium shrink-0">
+            <i class="fa-solid fa-lock text-[10px]"></i>
+            <span class="hidden sm:inline">Área da Cris</span>
+        </button>
+    </div>
+
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex flex-col group">
+                <span class="font-serif text-3xl font-bold tracking-wider text-stone-900 leading-none group-hover:text-brand-800 transition">LOJA BY CRIS</span>
+                <span class="text-[10px] tracking-[0.25em] text-stone-500 uppercase font-semibold mt-1 flex items-center gap-1">
+                    <i class="fa-solid fa-sparkles text-[8px] text-amber-500"></i> <span id="brandSubtitle">Natura & Desapegos Exclusivos</span>
+                </span>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar perfumes, cremes, vestidos ou garimpos..." class="w-full bg-stone-50 border border-stone-200 rounded-full py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:bg-white transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-stone-400 text-sm"></i>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <a id="headerWhatsappBtn" href="#" target="_blank" class="hidden sm:flex items-center gap-2 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 px-3.5 py-2 rounded-full text-xs font-bold transition shadow-xs">
+                    <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
+                    <span>Falar com a Cris</span>
+                </a>
+
+                <!-- Shopping Bag Drawer Button -->
+                <button onclick="toggleCartDrawer()" class="relative p-2.5 text-stone-700 hover:text-brand-600 rounded-full hover:bg-brand-50 transition" title="Ver Sacola de Compras">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-brand-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative">
+                <input type="text" id="searchInputMobile" oninput="syncAndFilterMobile(this.value)" placeholder="Buscar na loja da Cris..." class="w-full bg-stone-50 border border-stone-200 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-stone-400 text-sm"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-gradient-to-b from-stone-100 to-stone-50 py-6 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-4">
+                <span class="text-[11px] font-bold uppercase tracking-widest text-stone-500">Escolha o Espaço de Compras</span>
+                <h1 class="font-serif text-2xl sm:text-3xl font-bold text-stone-800">Bem-vinda à Loja Oficial da Cris</h1>
+            </div>
+
+            <!-- Store Selector Tabs -->
+            <div class="grid grid-cols-2 gap-3 max-w-2xl mx-auto p-1.5 bg-stone-200/80 rounded-2xl">
+                <!-- Tab 1: Natura da Cris -->
+                <button id="storeTabNatura" onclick="switchStore('natura')" class="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 store-tab-active bg-orange-600 text-white shadow-md">
+                    <i class="fa-solid fa-leaf text-base"></i>
+                    <div class="text-left">
+                        <span class="block leading-none">Natura da Cris</span>
+                        <span class="text-[10px] font-normal opacity-90 hidden sm:block">Perfumes, Cremes & Maquiagem</span>
+                    </div>
+                </button>
+
+                <!-- Tab 2: Desapego by Cris -->
+                <button id="storeTabDesapego" onclick="switchStore('desapego')" class="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 text-stone-700 hover:text-stone-900">
+                    <i class="fa-solid fa-shirt text-base"></i>
+                    <div class="text-left">
+                        <span class="block leading-none">Desapego by Cris</span>
+                        <span class="text-[10px] font-normal opacity-70 hidden sm:block">Bazar, Vestidos & Garimpos</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Banner for Natura -->
+    <section id="heroNatura" class="relative bg-gradient-to-r from-orange-800 via-orange-700 to-amber-800 text-white py-10 md:py-14 px-4 overflow-hidden shadow-md">
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-3">
+            <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-orange-100 text-xs uppercase tracking-widest px-4 py-1 rounded-full font-semibold border border-white/20">
+                <i class="fa-solid fa-leaf text-amber-300"></i> Consultora Autorizada Natura
+            </span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight">Cosméticos & Perfumaria Natura</h2>
+            <p class="text-orange-100 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+                Garanta os melhores perfumes, sabonetes, hidratantes e presentes Natura direto com a Cris. Escolha seus produtos e peça direto pelo WhatsApp!
+            </p>
+            <div class="pt-2 flex justify-center gap-3 flex-wrap">
+                <button onclick="openWhatsappDirect('Olá Cris, gostaria de saber quais produtos da Natura você tem disponíveis hoje!')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-2.5 rounded-full text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    Pedir Natura no WhatsApp
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Banner for Desapego -->
+    <section id="heroDesapego" class="hidden relative bg-gradient-to-r from-brand-900 via-brand-800 to-brand-900 text-white py-10 md:py-14 px-4 overflow-hidden shadow-md">
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-3">
+            <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-pink-100 text-xs uppercase tracking-widest px-4 py-1 rounded-full font-semibold border border-white/20">
+                <i class="fa-solid fa-gem text-amber-300"></i> Garimpos Selecionados & Peças Únicas
+            </span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight">Desapego by Cris - Moda & Elegância</h2>
+            <p class="text-pink-100 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+                Vestidos e peças exclusivas cuidadosamente selecionadas da Cris. Fotos 100% reais no manequim. Escolha o tamanho e reserve já!
+            </p>
+            <div class="pt-2 flex justify-center gap-3 flex-wrap">
+                <button onclick="openWhatsappDirect('Olá Cris, gostaria de ver as novidades de roupas no desapego!')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-2.5 rounded-full text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    Reservar Roupa no WhatsApp
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="como-funciona" class="bg-white py-8 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="infoNatura" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-orange-50/50 p-4 rounded-xl border border-orange-100">
+                    <i class="fa-solid fa-award text-2xl text-orange-600 mb-2"></i>
+                    <h3 class="font-bold text-stone-800 text-xs uppercase">100% Originais Natura</h3>
+                    <p class="text-xs text-stone-500 mt-1">Produtos lacrados e direto da fábrica Natura com toda garantia.</p>
+                </div>
+                <div class="bg-orange-50/50 p-4 rounded-xl border border-orange-100">
+                    <i class="fa-solid fa-box-archive text-2xl text-orange-600 mb-2"></i>
+                    <h3 class="font-bold text-stone-800 text-xs uppercase">Produtos em Estoque</h3>
+                    <p class="text-xs text-stone-500 mt-1">Variedade de itens disponíveis diretamente com a Cris.</p>
+                </div>
+                <div class="bg-orange-50/50 p-4 rounded-xl border border-orange-100">
+                    <i class="fa-solid fa-heart-circle-check text-2xl text-orange-600 mb-2"></i>
+                    <h3 class="font-bold text-stone-800 text-xs uppercase">Atendimento da Cris</h3>
+                    <p class="text-xs text-stone-500 mt-1">Monte kits de presente e tire dúvidas de fragrâncias pelo WhatsApp.</p>
+                </div>
+            </div>
+
+            <div id="infoDesapego" class="hidden grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-pink-50/50 p-4 rounded-xl border border-pink-100">
+                    <div class="w-8 h-8 bg-brand-100 text-brand-800 rounded-full flex items-center justify-center mx-auto mb-2 text-xs font-bold">1</div>
+                    <h3 class="font-bold text-stone-800 text-xs">Garimpo Único</h3>
+                    <p class="text-xs text-stone-500">Roupas novas e seminovas em perfeito estado.</p>
+                </div>
+                <div class="bg-pink-50/50 p-4 rounded-xl border border-pink-100">
+                    <div class="w-8 h-8 bg-brand-100 text-brand-800 rounded-full flex items-center justify-center mx-auto mb-2 text-xs font-bold">2</div>
+                    <h3 class="font-bold text-stone-800 text-xs">Fotos 100% Reais</h3>
+                    <p class="text-xs text-stone-500">Fotos reais da peça no manequim com frente e costas.</p>
+                </div>
+                <div class="bg-pink-50/50 p-4 rounded-xl border border-pink-100">
+                    <div class="w-8 h-8 bg-brand-100 text-brand-800 rounded-full flex items-center justify-center mx-auto mb-2 text-xs font-bold">3</div>
+                    <h3 class="font-bold text-stone-800 text-xs">Tamanhos Definidos</h3>
+                    <p class="text-xs text-stone-500">Confira o tamanho exato indicado na foto do produto.</p>
+                </div>
+                <div class="bg-pink-50/50 p-4 rounded-xl border border-pink-100">
+                    <div class="w-8 h-8 bg-brand-100 text-brand-800 rounded-full flex items-center justify-center mx-auto mb-2 text-xs font-bold">4</div>
+                    <h3 class="font-bold text-stone-800 text-xs">Reserva Direta</h3>
+                    <p class="text-xs text-stone-500">Finalize o pedido direto no WhatsApp com a Cris.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="catalogo">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200 pb-4 mb-6 gap-4">
+            <div>
+                <h2 id="catalogTitle" class="font-serif text-3xl font-bold text-stone-800">Catálogo Natura</h2>
+                <p class="text-xs text-stone-500">Exibindo <span id="productCount" class="font-bold text-brand-700">0</span> itens disponíveis</p>
+            </div>
+
+            <!-- Categories Filter Tabs -->
+            <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+                <!-- Dynamically populated based on active store -->
+            </div>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic products populate here -->
+        </div>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-stone-200 my-6 shadow-xs">
+            <div class="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-700">Nenhum produto encontrado</h3>
+            <p class="text-stone-500 text-xs sm:text-sm mt-1">Tente pesquisar por outros termos ou mude de categoria.</p>
+            <button onclick="resetFilters()" class="mt-4 text-xs font-bold text-brand-700 underline hover:text-brand-900">
+                Limpar filtros de busca
+            </button>
+        </div>
+    </main>
+
+    <footer class="bg-stone-900 text-stone-300 mt-16 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-white mb-2">LOJA BY CRIS</h3>
+                    <p class="text-xs text-stone-400 leading-relaxed max-w-sm">
+                        Sua loja digital com duas experiências incríveis: Cosméticos Natura a pronta entrega e Desapegos de moda feminina selecionados a dedo. Atendimento carinhoso e rápido direto no WhatsApp.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Atendimento com a Cris</h4>
+                    <p class="text-xs text-stone-400 mb-2"><i class="fa-solid fa-clock text-amber-500 mr-2"></i> Seg a Sáb: 08:00 às 19:00</p>
+                    <p class="text-xs text-stone-400 mb-2"><i class="fa-solid fa-handshake text-amber-500 mr-2"></i> Combinação direta pelo WhatsApp</p>
+                    <a id="footerPhoneLink" href="#" target="_blank" class="text-xs text-emerald-400 hover:underline flex items-center gap-1.5 mt-3 font-semibold">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span id="footerPhoneDisplay">(00) 00000-0000</span>
+                    </a>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Gerenciamento da Loja</h4>
+                    <p class="text-xs text-stone-400 mb-3">Área exclusiva da Cris para atualizar fotos da galeria, ajustar preços da Natura e do Desapego.</p>
+                    <button onclick="requireAdminPassword()" class="text-xs bg-stone-800 hover:bg-stone-700 text-white font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-2 border border-stone-700 shadow-xs">
+                        <i class="fa-solid fa-lock text-amber-400"></i>
+                        Entrar na Área Restrita da Cris
+                    </button>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 pt-6 text-center text-xs text-stone-500 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <p>&copy; <span id="yearSpan"></span> Loja by Cris. Todos os direitos reservados.</p>
+                <p class="text-[11px] text-stone-600">Espaço Natura & Desapego by Cris</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white text-stone-700 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Image view -->
+                <div class="bg-stone-100 p-4 flex flex-col justify-between">
+                    <div class="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-white shadow-inner flex items-center justify-center">
+                        <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+                        <span id="modalBadge" class="absolute top-3 left-3 bg-brand-800 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs"></span>
+                    </div>
+                    <!-- Thumbnails for switching Front / Back -->
+                    <div id="modalThumbs" class="flex gap-2 mt-3 justify-center"></div>
+                </div>
+
+                <!-- Details & Purchase -->
+                <div class="p-6 flex flex-col justify-between">
+                    <div>
+                        <span id="modalCategory" class="text-xs uppercase font-bold text-brand-600 tracking-wider"></span>
+                        <h2 id="modalTitle" class="font-serif text-2xl md:text-3xl font-bold text-stone-800 mt-1"></h2>
+                        
+                        <div class="mt-3 flex items-baseline gap-2">
+                            <span id="modalPrice" class="text-2xl font-bold text-stone-900"></span>
+                            <span id="modalPriceNote" class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full"></span>
+                        </div>
+
+                        <p id="modalDescription" class="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed"></p>
+
+                        <!-- Size Badge Display -->
+                        <div id="modalSizeContainer" class="mt-4 hidden items-center gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-stone-700">Tamanho disponível:</span>
+                            <span id="modalSizeDisplay" class="inline-block bg-brand-100 text-brand-900 border border-brand-300 font-bold px-3 py-1 rounded-lg text-xs"></span>
+                        </div>
+
+                        <div class="mt-6 bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs text-stone-600 space-y-1">
+                            <p><i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> <strong>Atendimento Direto:</strong> Fale com a Cris para tirar qualquer dúvida antes de comprar.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-2 pt-4 border-t border-stone-100">
+                        <button onclick="buyModalItemWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                            Pedir Agora via WhatsApp
+                        </button>
+                        <button onclick="addModalItemToCart()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold py-3 px-4 rounded-xl border border-stone-300 transition text-xs sm:text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            Adicionar à Sacola
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex justify-end">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300">
+            <!-- Drawer Header -->
+            <div class="p-5 bg-stone-900 text-white flex items-center justify-between border-b border-stone-800">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-amber-400 text-lg"></i>
+                    <h3 class="font-serif text-xl font-bold">Sua Sacola de Compras</h3>
+                </div>
+                <button onclick="toggleCartDrawer()" class="text-white/80 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cartItemsList" class="flex-1 p-4 overflow-y-auto space-y-3">
+                <!-- Dynamic cart content -->
+            </div>
+
+            <!-- Cart Drawer Footer -->
+            <div class="p-5 bg-stone-50 border-t border-stone-200 space-y-4">
+                <div class="flex justify-between items-center text-sm font-bold text-stone-800">
+                    <span>Total Estimado:</span>
+                    <span id="cartTotal" class="text-lg text-brand-900">R$ 0,00</span>
+                </div>
+                <button id="checkoutCartBtn" onclick="checkoutCartWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    Finalizar Pedido no WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANDATORY ADMIN PASSWORD LOGIN MODAL -->
+    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative text-center border border-stone-200 animate-in fade-in zoom-in duration-200">
+            <button onclick="closeAdminLoginModal()" class="absolute top-3 right-3 text-stone-400 hover:text-stone-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="w-14 h-14 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto mb-3 text-xl shadow-inner border border-amber-200">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            
+            <h3 class="font-serif text-2xl font-bold text-stone-800">Área Exclusiva da Cris</h3>
+            <p class="text-xs text-stone-500 mt-1 mb-4">Por segurança, digite a senha da administradora para entrar.</p>
+            
+            <form onsubmit="event.preventDefault(); verifyAdminPassword();" class="space-y-3">
+                <div>
+                    <input type="password" id="adminPasswordInput" placeholder="Sua senha de acesso..." class="w-full bg-stone-50 border border-stone-300 rounded-xl py-3 px-4 text-sm text-center font-bold focus:outline-none focus:ring-2 focus:ring-stone-800">
+                </div>
+                <button type="submit" class="w-full bg-stone-900 hover:bg-black text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-sm">
+                    Entrar no Painel
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL MODAL -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative">
+            <!-- Header -->
+            <div class="p-5 bg-stone-900 text-white flex items-center justify-between sticky top-0 z-20 shadow-md">
+                <div>
+                    <h3 class="font-serif text-2xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-amber-400"></i> Painel Administradora - Loja da Cris
+                    </h3>
+                    <p class="text-xs text-stone-300 mt-0.5">Altere preços, envie fotos da galeria e gerencie a Natura e o Desapego.</p>
+                </div>
+                <button onclick="closeAdminPanelAndLock()" class="bg-white/10 hover:bg-white/20 text-white rounded-full w-9 h-9 flex items-center justify-center transition" title="Fechar e Bloquear">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-8">
+                <!-- Store Settings Box -->
+                <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-4 shadow-xs">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800 flex items-center gap-2">
+                        <i class="fa-solid fa-gear text-amber-600"></i> Configurações do WhatsApp e Senha
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Seu WhatsApp com DDD:</label>
+                            <input type="text" id="adminWhatsappInput" placeholder="Ex: 5592999999999" class="w-full bg-white border border-stone-300 rounded-lg py-2 px-3 text-xs focus:ring-2 focus:ring-stone-800 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Texto do Banner Topo:</label>
+                            <input type="text" id="adminAnnouncementInput" placeholder="Ex: Promoções Natura & Desapego!" class="w-full bg-white border border-stone-300 rounded-lg py-2 px-3 text-xs focus:ring-2 focus:ring-stone-800 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Trocar Senha de Acesso:</label>
+                            <input type="password" id="adminNewPasswordInput" placeholder="Nova senha aqui" class="w-full bg-white border border-stone-300 rounded-lg py-2 px-3 text-xs focus:ring-2 focus:ring-stone-800 outline-none">
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 flex-wrap gap-2">
+                        <div class="flex gap-2">
+                            <button onclick="exportBackupData()" class="bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                📥 Baixar Backup
+                            </button>
+                            <button onclick="document.getElementById('backupFileInput').click()" class="bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                📤 Restaurar Backup
+                            </button>
+                            <input type="file" id="backupFileInput" accept=".json" class="hidden" onchange="importBackupData(event)">
+                        </div>
+                        <button onclick="saveStoreSettings()" class="bg-stone-800 hover:bg-black text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-xs">
+                            Salvar Configurações na Nuvem
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Manage Categories Box -->
+                <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-4 shadow-xs">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800 flex items-center gap-2">
+                        <i class="fa-solid fa-tags text-amber-600"></i> Criar e Gerenciar Novas Categorias
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-stone-700 mb-1">Loja de Destino:</label>
+                            <select id="newCatStoreTarget" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs font-bold">
+                                <option value="natura">🌺 Natura da Cris</option>
+                                <option value="desapego">👗 Desapego by Cris</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11px] font-bold text-stone-700 mb-1">Nome da Nova Categoria:</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="newCategoryInput" placeholder="Ex: Calçados, Bolsas, Acessórios, Infantil..." class="flex-1 bg-white border border-stone-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-stone-800 outline-none">
+                                <button onclick="addNewCategory()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition shadow-xs whitespace-nowrap">
+                                    + Criar Categoria
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- List of Existing and Custom Categories -->
+                    <div>
+                        <span class="text-[10px] font-bold uppercase text-stone-500 block mb-2">Categorias Ativas no Catálogo:</span>
+                        <div id="adminCategoriesList" class="flex flex-wrap gap-2 pt-1 border-t border-stone-200">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Catalog Manager -->
+                <div>
+                    <!-- Filter for Admin list -->
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2 border-b pb-3 border-stone-200">
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800">Gerenciar Seção:</h4>
+                            <select id="adminStoreFilter" onchange="renderAdminProductsList()" class="bg-stone-100 border border-stone-300 text-xs font-bold rounded-lg p-1.5">
+                                <option value="natura">🌺 Natura da Cris</option>
+                                <option value="desapego">👗 Desapego by Cris</option>
+                            </select>
+                        </div>
+                        <button onclick="toggleAddNewProductForm()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> + Cadastrar Novo Item
+                        </button>
+                    </div>
+
+                    <!-- Add New Item Form -->
+                    <div id="addNewProductForm" class="hidden bg-stone-50 border border-stone-300 p-5 rounded-2xl mb-6 space-y-4 shadow-sm">
+                        <h5 class="text-xs font-bold uppercase text-stone-900 flex items-center gap-1.5">
+                            <i class="fa-solid fa-box"></i> Cadastrar Novo Produto
+                        </h5>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">Loja de Destino:</label>
+                                <select id="newStoreTarget" onchange="updateNewCategoryOptions()" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs font-bold">
+                                    <option value="natura">🌺 Natura da Cris</option>
+                                    <option value="desapego">👗 Desapego by Cris</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">Nome do Item:</label>
+                                <input type="text" id="newTitle" placeholder="Ex: Kaiak Aventura 100ml ou Vestido..." class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">Preço (R$):</label>
+                                <input type="number" step="0.01" id="newPrice" placeholder="Ex: 89.90" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs font-bold">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">Categoria:</label>
+                                <select id="newCategory" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs">
+                                    <!-- Dynamic options inserted based on target store -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">Tamanho da Peça (Se for roupa):</label>
+                                <input type="text" id="newSize" placeholder="Ex: M, G, 38, Tamanho Único" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">Selo/Tag Destaque:</label>
+                                <input type="text" id="newBadge" placeholder="Ex: Pronta Entrega, Lançamento, Garimpo Cris" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs">
+                            </div>
+                        </div>
+
+                        <!-- Image File Upload Fields -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-3.5 rounded-xl border border-stone-200">
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-800 mb-1">📷 Foto Principal (Do Celular/PC):</label>
+                                <input type="file" id="newImgFrontFile" accept="image/*" class="text-xs w-full text-stone-600 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-800 hover:file:bg-amber-100">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-stone-700 mb-1">📷 Foto Secundária / Costas (Opcional):</label>
+                                <input type="file" id="newImgBackFile" accept="image/*" class="text-xs w-full text-stone-600 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-stone-100 file:text-stone-700 hover:file:bg-stone-200">
+                            </div>
+                        </div>
+
+                        <div>
+                            <textarea id="newDesc" rows="2" placeholder="Descrição do produto (fragrância, benefícios, tecido, detalhes...)" class="w-full bg-white border border-stone-300 rounded-lg p-2 text-xs"></textarea>
+                        </div>
+
+                        <div class="flex justify-end gap-2 pt-2 border-t border-stone-200">
+                            <button type="button" onclick="toggleAddNewProductForm()" class="px-3 py-1.5 text-xs text-stone-600 hover:text-stone-800">Cancelar</button>
+                            <button type="button" id="btnSaveNewProduct" onclick="createNewProduct()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xs flex items-center gap-1.5">
+                                <i class="fa-solid fa-check"></i> <span>Salvar no Catálogo</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic List of Items -->
+                    <div id="adminProductsList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer modal -->
+            <div class="p-4 bg-stone-100 border-t border-stone-200 flex justify-between items-center text-xs">
+                <span class="text-stone-500">Ao fechar esta janela, a senha será exigida novamente ao clicar no painel.</span>
+                <button onclick="closeAdminPanelAndLock()" class="bg-stone-900 text-white px-4 py-2 rounded-xl hover:bg-black transition font-bold">
+                    Concluir & Sair do Painel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editProductModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+            <button onclick="closeEditProductModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="font-serif text-2xl font-bold text-stone-800">Editar Produto</h3>
+            
+            <input type="hidden" id="editProductId">
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-stone-700 mb-1">Nome:</label>
+                    <input type="text" id="editTitle" class="w-full bg-stone-50 border border-stone-300 rounded-lg p-2 text-xs">
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block font-bold text-stone-700 mb-1">Preço (R$):</label>
+                        <input type="number" step="0.01" id="editPrice" class="w-full bg-stone-50 border border-stone-300 rounded-lg p-2 text-xs font-bold text-stone-900">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-stone-700 mb-1">Tamanho:</label>
+                        <input type="text" id="editSize" placeholder="Ex: M, Único" class="w-full bg-stone-50 border border-stone-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-stone-700 mb-1">Tag / Selo:</label>
+                        <input type="text" id="editBadge" class="w-full bg-stone-50 border border-stone-300 rounded-lg p-2 text-xs">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-stone-700 mb-1">Substituir Foto Principal (Opcional):</label>
+                    <input type="file" id="editImgFrontFile" accept="image/*" class="w-full text-stone-600">
+                </div>
+                <div>
+                    <label class="block font-bold text-stone-700 mb-1">Descrição:</label>
+                    <textarea id="editDesc" rows="3" class="w-full bg-stone-50 border border-stone-300 rounded-lg p-2 text-xs"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button onclick="closeEditProductModal()" class="px-4 py-2 text-stone-600 hover:text-stone-800 text-xs font-semibold">Cancelar</button>
+                <button onclick="saveEditProduct()" class="bg-stone-900 hover:bg-black text-white font-bold px-4 py-2 rounded-lg text-xs shadow-xs">
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative text-center border border-stone-200 animate-in fade-in zoom-in duration-200">
+            <button onclick="closeDeleteConfirmModal()" class="absolute top-3 right-3 text-stone-400 hover:text-stone-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl shadow-inner">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-stone-800">Excluir Produto?</h3>
+            <p class="text-xs text-stone-500 mt-1 mb-5">Tem certeza que deseja remover <strong id="deleteProductTitle" class="text-stone-800"></strong> do catálogo?</p>
+            <div class="flex gap-2">
+                <button type="button" onclick="closeDeleteConfirmModal()" class="w-1/2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2.5 rounded-xl text-xs transition">
+                    Cancelar
+                </button>
+                <button type="button" onclick="confirmDeleteProduct()" class="w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
+                    Sim, Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-stone-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-stone-700 animate-in fade-in slide-in-from-bottom duration-300">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage" class="text-xs font-medium"></span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Universal Cloud API Endpoint
+        const CLOUD_SYNC_URL = 'https://kvdb.io/8xK43sL9z12m7PqWn3/loja_cris_data_v2';
+
+        // Default categories list
+        const DEFAULT_CATEGORIES = [
+            { id: 'perfumaria', label: 'Perfumaria', store: 'natura', isDefault: true },
+            { id: 'corpo', label: 'Cuidados com o Corpo', store: 'natura', isDefault: true },
+            { id: 'cabelos', label: 'Cabelos', store: 'natura', isDefault: true },
+            { id: 'maquiagem', label: 'Maquiagem', store: 'natura', isDefault: true },
+            { id: 'presentes', label: 'Kits & Presentes', store: 'natura', isDefault: true },
+            { id: 'festas', label: 'Festas & Luxo', store: 'desapego', isDefault: true },
+            { id: 'curtos', label: 'Vestidos Curtos', store: 'desapego', isDefault: true },
+            { id: 'longos', label: 'Vestidos Longos', store: 'desapego', isDefault: true },
+            { id: 'estampados', label: 'Estampados & Casuais', store: 'desapego', isDefault: true }
+        ];
+
+        let categoriesList = [...DEFAULT_CATEGORIES];
+
+        // Initial default products
+        const INITIAL_NATURA_PRODUCTS = [
+            {
+                id: 'natura-1',
+                store: 'natura',
+                title: 'Natura Kaiak Masculino Desodorante Colônia 100ml',
+                category: 'perfumaria',
+                price: 154.90,
+                isAvailable: true,
+                badge: 'Em Estoque',
+                description: 'A clássica fragrância aquática e vibrante de Kaiak. Notas de bergamota, noz-moscada e bergamota.',
+                images: { front: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80' },
+                placeholderColor: '#ea580c'
+            },
+            {
+                id: 'natura-2',
+                store: 'natura',
+                title: 'Creme Deod. Nutritivo Tododia Algodão 400ml',
+                category: 'corpo',
+                price: 68.90,
+                isAvailable: true,
+                badge: 'Mais Vendido',
+                description: 'Pele macia e protegida com fragrância suave e confortável.',
+                images: { front: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80' },
+                placeholderColor: '#f97316'
+            }
+        ];
+
+        const INITIAL_DESAPEGO_PRODUCTS = [
+            {
+                id: 'prod-1',
+                store: 'desapego',
+                title: 'Vestido Longo Vermelho Fenda e Ombro Só',
+                category: 'longos',
+                price: 189.90,
+                size: 'M',
+                isAvailable: true,
+                badge: 'Garimpo Luxo',
+                description: 'Vestido longo em malha nobre vermelha com caimento impecável. Modelagem de um ombro só e fenda lateral.',
+                images: { front: '1000153774.jpg', back: '1000153772.jpg' },
+                placeholderColor: '#9e2942'
+            },
+            {
+                id: 'prod-2',
+                store: 'desapego',
+                title: 'Vestido Curto Amarelo em Lesi Lese com Camadas',
+                category: 'curtos',
+                price: 159.90,
+                size: 'P',
+                isAvailable: true,
+                badge: 'Mais Desejado',
+                description: 'Vestido curto amarelo em tecido bordado tipo lesi/rebrodé. Mangas bufantes e saia em camadas.',
+                images: { front: '1000153816.jpg', back: '1000153823.jpg' },
+                placeholderColor: '#eab308'
+            }
+        ];
+
+        // Global State
+        let activeStore = 'natura';
+        let products = [];
+        let cart = [];
+        let currentFilter = 'todos';
+        let searchQuery = '';
+        let selectedProductForModal = null;
+        let productToDeleteId = null;
+
+        let storeSettings = {
+            whatsappPhone: '5592999999999',
+            announcement: '✨ Bem-vinda à Loja by Cris! Produtos Natura em estoque e Garimpos de Moda imperdíveis.',
+            adminPassword: 'cris123'
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'loja-by-cris';
+        const firebaseConfig = typeof __firebase_config !== 'undefined'
+            ? JSON.parse(__firebase_config)
+            : { apiKey: "demo", authDomain: "demo.firebaseapp.com", projectId: "demo" };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Restore password & settings from local cache
+            const localPass = localStorage.getItem('loja_cris_admin_password');
+            if (localPass) storeSettings.adminPassword = localPass;
+
+            const localPhone = localStorage.getItem('loja_cris_phone');
+            if (localPhone) storeSettings.whatsappPhone = localPhone;
+
+            const localProducts = localStorage.getItem('loja_cris_products_cache');
+            if (localProducts) {
+                try { products = JSON.parse(localProducts); } catch(e){}
+            } else {
+                products = [...INITIAL_NATURA_PRODUCTS, ...INITIAL_DESAPEGO_PRODUCTS];
+            }
+
+            const localCats = localStorage.getItem('loja_cris_categories_cache');
+            if (localCats) {
+                try {
+                    const parsed = JSON.parse(localCats);
+                    categoriesList = [...DEFAULT_CATEGORIES, ...parsed.filter(c => !c.isDefault)];
+                } catch(e){}
+            }
+
+            // Restore cart
+            const savedCart = localStorage.getItem('loja_cris_cart');
+            if (savedCart) {
+                try { cart = JSON.parse(savedCart); } catch(e) { cart = []; }
+            }
+
+            // Render initial state fast
+            updateStoreUI();
+            updateCartBadge();
+            document.getElementById('yearSpan').textContent = new Date().getFullYear();
+
+            // Perform Cloud database sync from global API across all devices
+            await fetchAndApplyUniversalCloudData();
+
+            // Periodic sync check every 12 seconds so all devices get live changes
+            setInterval(fetchAndApplyUniversalCloudData, 12000);
+        });
+
+        // Universal REST Cloud Data Sync Function (Works across ALL devices & hosts)
+        async function fetchAndApplyUniversalCloudData() {
+            try {
+                const res = await fetch(CLOUD_SYNC_URL + '?t=' + Date.now());
+                if (res.ok) {
+                    const remoteData = await res.json();
+                    if (remoteData && remoteData.products && Array.isArray(remoteData.products)) {
+                        products = remoteData.products;
+                        saveProductsToLocalCache();
+
+                        if (remoteData.settings) {
+                            storeSettings = { ...storeSettings, ...remoteData.settings };
+                            if (storeSettings.adminPassword) {
+                                localStorage.setItem('loja_cris_admin_password', storeSettings.adminPassword);
+                            }
+                            if (storeSettings.whatsappPhone) {
+                                localStorage.setItem('loja_cris_phone', storeSettings.whatsappPhone);
+                            }
+                            updateHeaderAndFooter();
+                        }
+
+                        if (remoteData.categories && Array.isArray(remoteData.categories)) {
+                            const customOnly = remoteData.categories.filter(c => !c.isDefault);
+                            categoriesList = [...DEFAULT_CATEGORIES, ...customOnly];
+                            localStorage.setItem('loja_cris_categories_cache', JSON.stringify(customOnly));
+                        }
+
+                        renderCategories();
+                        renderAdminCategoriesList();
+                        updateNewCategoryOptions();
+                        renderProducts();
+                        renderAdminProductsList();
+                    }
+                }
+            } catch(e) {
+                console.warn("Nuvem universal temporariamente indisponível:", e);
+            }
+        }
+
+        async function pushUniversalCloudData() {
+            try {
+                const customCats = categoriesList.filter(c => !c.isDefault);
+                const payload = {
+                    products: products,
+                    categories: customCats,
+                    settings: storeSettings,
+                    lastUpdated: Date.now()
+                };
+
+                await fetch(CLOUD_SYNC_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch(e) {
+                console.warn("Envio para nuvem falhou:", e);
+            }
+        }
+
+        function saveProductsToLocalCache() {
+            try {
+                localStorage.setItem('loja_cris_products_cache', JSON.stringify(products));
+            } catch(e) {
+                console.warn("Aviso de memória cheia:", e);
+            }
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('loja_cris_cart', JSON.stringify(cart));
+        }
+
+        // Image Compression Function
+        function compressAndReadFile(file, maxWidth = 480, maxHeight = 640, quality = 0.5) {
+            return new Promise((resolve, reject) => {
+                if (!file) { resolve(null); return; }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        resolve(dataUrl);
+                    };
+                    img.onerror = () => reject(new Error('Falha ao processar foto'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = (e) => reject(e);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // UI Toast helper
+        window.showToast = function(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.textContent = message;
+            if (type === 'error') {
+                toastIcon.className = 'fa-solid fa-circle-exclamation text-red-400';
+            } else {
+                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400';
+            }
+
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        };
+
+        // Admin Security Lock
+        window.requireAdminPassword = function() {
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminLoginModal').classList.remove('hidden');
+        };
+
+        window.closeAdminLoginModal = function() {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+        };
+
+        window.verifyAdminPassword = function() {
+            const inputPass = document.getElementById('adminPasswordInput').value;
+            const currentPass = storeSettings.adminPassword || 'cris123';
+
+            if (inputPass === currentPass) {
+                closeAdminLoginModal();
+                document.getElementById('adminModal').classList.remove('hidden');
+                document.getElementById('adminWhatsappInput').value = storeSettings.whatsappPhone || '';
+                document.getElementById('adminAnnouncementInput').value = storeSettings.announcement || '';
+                renderAdminCategoriesList();
+                updateNewCategoryOptions();
+                renderAdminProductsList();
+            } else {
+                showToast('Senha incorreta! Tente novamente.', 'error');
+            }
+        };
+
+        window.closeAdminPanelAndLock = function() {
+            document.getElementById('adminModal').classList.add('hidden');
+            showToast('Painel da Cris fechado com segurança!');
+        };
+
+        // Switch active store (Natura vs Desapego)
+        window.switchStore = function(store) {
+            activeStore = store;
+            currentFilter = 'todos';
+            updateStoreUI();
+        };
+
+        function updateStoreUI() {
+            const tabNatura = document.getElementById('storeTabNatura');
+            const tabDesapego = document.getElementById('storeTabDesapego');
+            const heroNatura = document.getElementById('heroNatura');
+            const heroDesapego = document.getElementById('heroDesapego');
+            const infoNatura = document.getElementById('infoNatura');
+            const infoDesapego = document.getElementById('infoDesapego');
+            const catalogTitle = document.getElementById('catalogTitle');
+
+            if (activeStore === 'natura') {
+                tabNatura.className = "flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 store-tab-active bg-orange-600 text-white shadow-md";
+                tabDesapego.className = "flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 text-stone-700 hover:text-stone-900";
+                
+                heroNatura.classList.remove('hidden');
+                heroDesapego.classList.add('hidden');
+                infoNatura.classList.remove('hidden');
+                infoDesapego.classList.add('hidden');
+
+                catalogTitle.textContent = "Catálogo Natura";
+            } else {
+                tabDesapego.className = "flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 store-tab-active bg-brand-800 text-white shadow-md";
+                tabNatura.className = "flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 text-stone-700 hover:text-stone-900";
+                
+                heroDesapego.classList.remove('hidden');
+                heroNatura.classList.add('hidden');
+                infoDesapego.classList.remove('hidden');
+                infoNatura.classList.add('hidden');
+
+                catalogTitle.textContent = "Desapego by Cris - Garimpos de Moda";
+            }
+
+            renderCategories();
+            renderProducts();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoryTabs');
+            const storeCats = categoriesList.filter(c => c.store === activeStore);
+
+            let html = `
+                <button onclick="setCategoryFilter('todos')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap ${currentFilter === 'todos' ? 'bg-stone-900 text-white shadow-xs' : 'bg-stone-100 text-stone-600 hover:bg-stone-200'}">
+                    Todos os Itens
+                </button>
+            `;
+
+            storeCats.forEach(cat => {
+                const isActive = currentFilter === cat.id;
+                html += `
+                    <button onclick="setCategoryFilter('${cat.id}')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap ${isActive ? 'bg-stone-900 text-white shadow-xs' : 'bg-stone-100 text-stone-600 hover:bg-stone-200'}">
+                        ${cat.label}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        window.setCategoryFilter = function(catId) {
+            currentFilter = catId;
+            renderCategories();
+            renderProducts();
+        };
+
+        window.filterProducts = function() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            renderProducts();
+        };
+
+        window.syncAndFilterMobile = function(val) {
+            document.getElementById('searchInput').value = val;
+            searchQuery = val.toLowerCase().trim();
+            renderProducts();
+        };
+
+        window.resetFilters = function() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInputMobile').value = '';
+            searchQuery = '';
+            currentFilter = 'todos';
+            renderCategories();
+            renderProducts();
+        };
+
+        function getCategoryLabel(catId) {
+            const found = categoriesList.find(c => c.id === catId);
+            return found ? found.label : catId;
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const productCount = document.getElementById('productCount');
+
+            let filtered = products.filter(p => p.store === activeStore);
+
+            if (currentFilter !== 'todos') {
+                filtered = filtered.filter(p => p.category === currentFilter);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(p => 
+                    p.title.toLowerCase().includes(searchQuery) ||
+                    (p.description && p.description.toLowerCase().includes(searchQuery)) ||
+                    (p.size && p.size.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            productCount.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            let html = '';
+            filtered.forEach(item => {
+                const imgFront = item.images?.front || item.images?.url || 'https://placehold.co/400x533/ea580c/ffffff?text=Loja+by+Cris';
+                const formattedPrice = item.price > 0 ? `R$ ${item.price.toFixed(2).replace('.', ',')}` : 'Consulte Valor';
+
+                html += `
+                    <div class="bg-white rounded-2xl border border-stone-200/80 shadow-xs hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between group">
+                        <div class="relative cursor-pointer overflow-hidden aspect-[3/4] bg-stone-100" onclick="openProductModal('${item.id}')">
+                            <img src="${imgFront}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            
+                            ${item.badge ? `<span class="absolute top-3 left-3 bg-stone-900/90 backdrop-blur-xs text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">${item.badge}</span>` : ''}
+                            
+                            ${item.size ? `<span class="absolute bottom-3 right-3 bg-white/95 text-stone-900 border border-stone-300 text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">Tam: ${item.size}</span>` : ''}
+
+                            ${!item.isAvailable ? `<div class="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white font-bold text-xs uppercase tracking-widest">Esgotado</div>` : ''}
+                        </div>
+
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-stone-400 tracking-wider">${getCategoryLabel(item.category)}</span>
+                                <h3 class="font-serif text-lg font-bold text-stone-800 line-clamp-2 mt-0.5 group-hover:text-brand-800 transition">${item.title}</h3>
+                            </div>
+
+                            <div class="pt-2 border-t border-stone-100 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-[10px] text-stone-400 font-bold uppercase">Preço</span>
+                                    <span class="text-lg font-bold text-stone-900">${formattedPrice}</span>
+                                </div>
+                                <div class="flex gap-1.5">
+                                    <button onclick="addToCart('${item.id}')" class="p-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl transition" title="Adicionar à Sacola">
+                                        <i class="fa-solid fa-bag-shopping"></i>
+                                    </button>
+                                    <button onclick="buySingleProductWhatsApp('${item.id}')" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5">
+                                        <i class="fa-brands fa-whatsapp text-sm"></i> Pedir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        // WhatsApp Direct Link Handler
+        window.openWhatsappDirect = function(customMessage) {
+            const phone = storeSettings.whatsappPhone || '5592999999999';
+            const encodedMsg = encodeURIComponent(customMessage || 'Olá Cris, gostaria de tirar dúvidas sobre a sua loja!');
+            window.open(`https://wa.me/${phone}?text=${encodedMsg}`, '_blank');
+        };
+
+        window.buySingleProductWhatsApp = function(productId) {
+            const item = products.find(p => p.id === productId);
+            if (!item) return;
+
+            const phone = storeSettings.whatsappPhone || '5592999999999';
+            const priceStr = item.price > 0 ? `R$ ${item.price.toFixed(2).replace('.', ',')}` : 'A combinar';
+            const sizeStr = item.size ? ` (Tamanho: ${item.size})` : '';
+
+            const msg = `Olá Cris! Tenho interesse no seguinte item:\n\n* ${item.title}${sizeStr}\n* Preço: ${priceStr}\n\nGostaria de confirmar a disponibilidade e fechar o pedido!`;
+            
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        // Product Details Modal
+        window.openProductModal = function(id) {
+            const item = products.find(p => p.id === id);
+            if (!item) return;
+
+            selectedProductForModal = item;
+
+            const modalImage = document.getElementById('modalImage');
+            const modalBadge = document.getElementById('modalBadge');
+            const modalCategory = document.getElementById('modalCategory');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalPrice = document.getElementById('modalPrice');
+            const modalPriceNote = document.getElementById('modalPriceNote');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalThumbs = document.getElementById('modalThumbs');
+            const modalSizeContainer = document.getElementById('modalSizeContainer');
+            const modalSizeDisplay = document.getElementById('modalSizeDisplay');
+
+            const frontImg = item.images?.front || item.images?.url || 'https://placehold.co/400x533/ea580c/ffffff?text=Loja+by+Cris';
+            const backImg = item.images?.back;
+
+            modalImage.src = frontImg;
+            modalBadge.textContent = item.badge || 'Exclusivo Cris';
+            modalCategory.textContent = getCategoryLabel(item.category);
+            modalTitle.textContent = item.title;
+            modalPrice.textContent = item.price > 0 ? `R$ ${item.price.toFixed(2).replace('.', ',')}` : 'Consulte Valor';
+            modalPriceNote.textContent = item.isAvailable ? 'Em Estoque' : 'Esgotado';
+            modalDescription.textContent = item.description || 'Produto selecionado com carinho da Loja da Cris.';
+
+            if (item.size) {
+                modalSizeContainer.classList.remove('hidden');
+                modalSizeContainer.classList.add('flex');
+                modalSizeDisplay.textContent = item.size;
+            } else {
+                modalSizeContainer.classList.add('hidden');
+                modalSizeContainer.classList.remove('flex');
+            }
+
+            // Thumbs for front / back
+            modalThumbs.innerHTML = '';
+            if (backImg) {
+                modalThumbs.innerHTML = `
+                    <button onclick="document.getElementById('modalImage').src='${frontImg}'" class="w-12 h-14 rounded-lg overflow-hidden border-2 border-brand-500 focus:outline-none">
+                        <img src="${frontImg}" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="document.getElementById('modalImage').src='${backImg}'" class="w-12 h-14 rounded-lg overflow-hidden border-2 border-stone-300 hover:border-brand-500 focus:outline-none">
+                        <img src="${backImg}" class="w-full h-full object-cover">
+                    </button>
+                `;
+            }
+
+            document.getElementById('productModal').classList.remove('hidden');
+        };
+
+        window.closeProductModal = function() {
+            document.getElementById('productModal').classList.add('hidden');
+        };
+
+        window.buyModalItemWhatsApp = function() {
+            if (selectedProductForModal) {
+                buySingleProductWhatsApp(selectedProductForModal.id);
+            }
+        };
+
+        window.addModalItemToCart = function() {
+            if (selectedProductForModal) {
+                addToCart(selectedProductForModal.id);
+                closeProductModal();
+            }
+        };
+
+        // Shopping Bag Logic
+        window.addToCart = function(productId) {
+            const item = products.find(p => p.id === productId);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+
+            saveCartToStorage();
+            updateCartBadge();
+            renderCartDrawer();
+            showToast(`"${item.title}" adicionado à sacola!`);
+        };
+
+        window.toggleCartDrawer = function() {
+            const drawer = document.getElementById('cartDrawer');
+            if (drawer.classList.contains('hidden')) {
+                renderCartDrawer();
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.add('hidden');
+            }
+        };
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            const totalItems = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderCartDrawer() {
+            const container = document.getElementById('cartItemsList');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutCartBtn');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-stone-400">
+                        <i class="fa-solid fa-bag-shopping text-4xl mb-2"></i>
+                        <p class="text-xs font-bold text-stone-600">Sua sacola está vazia</p>
+                        <p class="text-[11px] text-stone-400 mt-1">Escolha itens da Natura ou Desapego para adicionar aqui.</p>
+                    </div>
+                `;
+                cartTotal.textContent = 'R$ 0,00';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            let total = 0;
+            let html = '';
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                const img = item.images?.front || item.images?.url || 'https://placehold.co/400x533/ea580c/ffffff?text=Cris';
+
+                html += `
+                    <div class="flex gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200 items-center justify-between">
+                        <img src="${img}" class="w-14 h-16 object-cover rounded-lg bg-white border border-stone-200 shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-serif font-bold text-stone-800 text-sm truncate">${item.title}</h4>
+                            <p class="text-[11px] text-stone-500">${item.size ? 'Tam: ' + item.size : getCategoryLabel(item.category)}</p>
+                            <span class="text-xs font-bold text-stone-900">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="number" min="1" value="${item.quantity}" onchange="updateCartQty('${item.id}', this.value)" class="w-12 bg-white border border-stone-300 rounded-lg text-center text-xs font-bold p-1">
+                            <button onclick="removeFromCart('${item.id}')" class="text-stone-400 hover:text-red-600 p-1">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            cartTotal.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        window.updateCartQty = function(id, qty) {
+            const q = parseInt(qty);
+            const item = cart.find(c => c.id === id);
+            if (item && q > 0) {
+                item.quantity = q;
+                saveCartToStorage();
+                updateCartBadge();
+                renderCartDrawer();
+            }
+        };
+
+        window.removeFromCart = function(id) {
+            cart = cart.filter(c => c.id !== id);
+            saveCartToStorage();
+            updateCartBadge();
+            renderCartDrawer();
+        };
+
+        window.checkoutCartWhatsApp = function() {
+            if (cart.length === 0) return;
+
+            const phone = storeSettings.whatsappPhone || '5592999999999';
+            let msg = `Olá Cris! Gostaria de finalizar o seguinte pedido da minha sacola:\n\n`;
+
+            let total = 0;
+            cart.forEach((item, idx) => {
+                const sub = item.price * item.quantity;
+                total += sub;
+                const sizeStr = item.size ? ` (Tamanho: ${item.size})` : '';
+                msg += `${idx + 1}. *${item.title}*${sizeStr}\n   Qtd: ${item.quantity}x | R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
+            });
+
+            msg += `*Total Estimado:* R$ ${total.toFixed(2).replace('.', ',')}\n\nComo podemos combinar o pagamento e a entrega/retirada?`;
+
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        // ADMIN PANEL FUNCTIONS
+        window.updateHeaderAndFooter = function() {
+            document.getElementById('announcementText').textContent = storeSettings.announcement || '✨ Bem-vinda à Loja by Cris!';
+            document.getElementById('footerPhoneDisplay').textContent = storeSettings.whatsappPhone || '(00) 00000-0000';
+            document.getElementById('footerPhoneLink').href = `https://wa.me/${storeSettings.whatsappPhone || '5592999999999'}`;
+            document.getElementById('headerWhatsappBtn').href = `https://wa.me/${storeSettings.whatsappPhone || '5592999999999'}`;
+        };
+
+        window.renderAdminCategoriesList = function() {
+            const container = document.getElementById('adminCategoriesList');
+            let html = '';
+
+            categoriesList.forEach(cat => {
+                const storeLabel = cat.store === 'natura' ? '🌺 Natura' : '👗 Desapego';
+                html += `
+                    <div class="inline-flex items-center gap-1.5 bg-white border border-stone-300 px-2.5 py-1 rounded-lg text-xs font-semibold text-stone-700 shadow-2xs">
+                        <span>${storeLabel}: <strong>${cat.label}</strong></span>
+                        ${!cat.isDefault ? `<button onclick="deleteCustomCategory('${cat.id}')" class="text-stone-400 hover:text-red-600 ml-1 font-bold">×</button>` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        };
+
+        window.updateNewCategoryOptions = function() {
+            const storeTarget = document.getElementById('newStoreTarget').value;
+            const select = document.getElementById('newCategory');
+            const filtered = categoriesList.filter(c => c.store === storeTarget);
+
+            let html = '';
+            filtered.forEach(cat => {
+                html += `<option value="${cat.id}">${cat.label}</option>`;
+            });
+
+            select.innerHTML = html;
+        };
+
+        window.addNewCategory = function() {
+            const storeTarget = document.getElementById('newCatStoreTarget').value;
+            const catName = document.getElementById('newCategoryInput').value.trim();
+
+            if (!catName) {
+                showToast('Digite o nome da nova categoria.', 'error');
+                return;
+            }
+
+            const catId = 'cat-' + Date.now();
+            const newCat = { id: catId, label: catName, store: storeTarget, isDefault: false };
+
+            categoriesList.push(newCat);
+            document.getElementById('newCategoryInput').value = '';
+
+            renderCategories();
+            renderAdminCategoriesList();
+            updateNewCategoryOptions();
+            pushUniversalCloudData();
+            showToast(`Categoria "${catName}" criada com sucesso!`);
+        };
+
+        window.deleteCustomCategory = function(catId) {
+            categoriesList = categoriesList.filter(c => c.id !== catId);
+            renderCategories();
+            renderAdminCategoriesList();
+            updateNewCategoryOptions();
+            pushUniversalCloudData();
+            showToast('Categoria removida!');
+        };
+
+        window.toggleAddNewProductForm = function() {
+            const form = document.getElementById('addNewProductForm');
+            form.classList.toggle('hidden');
+            updateNewCategoryOptions();
+        };
+
+        window.createNewProduct = async function() {
+            const storeTarget = document.getElementById('newStoreTarget').value;
+            const title = document.getElementById('newTitle').value.trim();
+            const price = parseFloat(document.getElementById('newPrice').value);
+            const category = document.getElementById('newCategory').value;
+            const size = document.getElementById('newSize').value.trim();
+            const badge = document.getElementById('newBadge').value.trim() || (storeTarget === 'natura' ? 'Em Estoque' : 'Garimpo Novo');
+            const desc = document.getElementById('newDesc').value.trim() || 'Produto cadastrado na Loja da Cris.';
+
+            const frontFileInput = document.getElementById('newImgFrontFile');
+            const backFileInput = document.getElementById('newImgBackFile');
+
+            if (!title) {
+                showToast('Por favor, digite o nome do produto ou roupa.', 'error');
+                return;
+            }
+
+            const btnSave = document.getElementById('btnSaveNewProduct');
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>Processando e salvando...</span>`;
+
+            try {
+                let frontDataUrl = null;
+                let backDataUrl = null;
+
+                if (frontFileInput.files && frontFileInput.files[0]) {
+                    frontDataUrl = await compressAndReadFile(frontFileInput.files[0]);
+                }
+
+                if (backFileInput.files && backFileInput.files[0]) {
+                    backDataUrl = await compressAndReadFile(backFileInput.files[0]);
+                }
+
+                const id = 'prod-' + Date.now();
+                const newProd = {
+                    id: id,
+                    store: storeTarget,
+                    title: title,
+                    category: category,
+                    price: isNaN(price) ? 0 : price,
+                    size: size || (storeTarget === 'desapego' ? 'Único' : ''),
+                    isAvailable: true,
+                    badge: badge,
+                    description: desc,
+                    images: {
+                        front: frontDataUrl || 'https://placehold.co/400x533/ea580c/ffffff?text=Loja+by+Cris',
+                        back: backDataUrl || null
+                    },
+                    placeholderColor: storeTarget === 'natura' ? '#ea580c' : '#9e2942'
+                };
+
+                products.unshift(newProd);
+                saveProductsToLocalCache();
+                renderProducts();
+                renderAdminProductsList();
+
+                // Save to cloud API for all devices
+                await pushUniversalCloudData();
+
+                // Reset form
+                document.getElementById('newTitle').value = '';
+                document.getElementById('newPrice').value = '';
+                document.getElementById('newSize').value = '';
+                document.getElementById('newBadge').value = '';
+                document.getElementById('newDesc').value = '';
+                frontFileInput.value = '';
+                backFileInput.value = '';
+                toggleAddNewProductForm();
+
+                showToast(`"${title}" cadastrado e publicado para todas as clientes!`);
+            } catch(e) {
+                console.error("Erro ao criar produto:", e);
+                showToast('Erro ao processar imagem ou salvar produto.', 'error');
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = `<i class="fa-solid fa-check"></i> <span>Salvar no Catálogo</span>`;
+            }
+        };
+
+        window.renderAdminProductsList = function() {
+            const container = document.getElementById('adminProductsList');
+            const targetStore = document.getElementById('adminStoreFilter').value;
+
+            const filtered = products.filter(p => p.store === targetStore);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-stone-400 bg-stone-50 rounded-xl border border-stone-200 text-xs">
+                        Nenhum produto cadastrado nesta seção ainda.
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(item => {
+                const img = item.images?.front || item.images?.url || 'https://placehold.co/400x533/ea580c/ffffff?text=Cris';
+
+                html += `
+                    <div class="flex items-center justify-between gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200">
+                        <img src="${img}" class="w-12 h-14 object-cover rounded-lg bg-white border border-stone-200 shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h5 class="font-bold text-stone-800 text-xs truncate">${item.title}</h5>
+                            <p class="text-[10px] text-stone-500">${item.size ? 'Tam: ' + item.size + ' | ' : ''}${getCategoryLabel(item.category)}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="text-right">
+                                <label class="block text-[9px] font-bold text-stone-400 uppercase">Preço (R$)</label>
+                                <input type="number" step="0.01" value="${item.price}" onchange="updateProductPrice('${item.id}', this.value)" class="w-20 bg-white border border-stone-300 rounded-md text-xs font-bold p-1 text-center">
+                            </div>
+                            <button onclick="toggleAvailability('${item.id}')" class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition ${item.isAvailable ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}" title="Alternar Disponibilidade">
+                                ${item.isAvailable ? 'Em Estoque' : 'Esgotado'}
+                            </button>
+                            <button onclick="openEditProductModal('${item.id}')" class="p-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg text-xs" title="Editar Item">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="promptDeleteProduct('${item.id}')" class="p-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs" title="Excluir Item">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        };
+
+        window.updateProductPrice = function(id, newPriceVal) {
+            const val = parseFloat(newPriceVal);
+            const p = products.find(item => item.id === id);
+            if (p) {
+                p.price = isNaN(val) ? 0 : val;
+                saveProductsToLocalCache();
+                renderProducts();
+                pushUniversalCloudData();
+                showToast('Preço atualizado com sucesso!');
+            }
+        };
+
+        window.toggleAvailability = function(id) {
+            const p = products.find(item => item.id === id);
+            if (p) {
+                p.isAvailable = !p.isAvailable;
+                saveProductsToLocalCache();
+                renderProducts();
+                renderAdminProductsList();
+                pushUniversalCloudData();
+                showToast(`Status: ${p.isAvailable ? 'Em Estoque' : 'Esgotado'}`);
+            }
+        };
+
+        window.promptDeleteProduct = function(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            productToDeleteId = id;
+            document.getElementById('deleteProductTitle').textContent = p.title;
+            document.getElementById('deleteConfirmModal').classList.remove('hidden');
+        };
+
+        window.closeDeleteConfirmModal = function() {
+            document.getElementById('deleteConfirmModal').classList.add('hidden');
+            productToDeleteId = null;
+        };
+
+        window.confirmDeleteProduct = async function() {
+            if (!productToDeleteId) return;
+
+            const targetId = productToDeleteId;
+            const itemTitle = products.find(p => p.id === targetId)?.title || 'Item';
+
+            products = products.filter(p => p.id !== targetId);
+            saveProductsToLocalCache();
+            cart = cart.filter(c => c.id !== targetId);
+            saveCartToStorage();
+            updateCartBadge();
+            renderProducts();
+            renderAdminProductsList();
+
+            closeDeleteConfirmModal();
+            showToast(`"${itemTitle}" removido do catálogo!`);
+
+            await pushUniversalCloudData();
+        };
+
+        window.openEditProductModal = function(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('editProductId').value = p.id;
+            document.getElementById('editTitle').value = p.title;
+            document.getElementById('editPrice').value = p.price;
+            document.getElementById('editSize').value = p.size || '';
+            document.getElementById('editBadge').value = p.badge || '';
+            document.getElementById('editDesc').value = p.description || '';
+
+            document.getElementById('editProductModal').classList.remove('hidden');
+        };
+
+        window.closeEditProductModal = function() {
+            document.getElementById('editProductModal').classList.add('hidden');
+        };
+
+        window.saveEditProduct = async function() {
+            const id = document.getElementById('editProductId').value;
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            const newTitle = document.getElementById('editTitle').value.trim() || p.title;
+            const newPrice = parseFloat(document.getElementById('editPrice').value) || 0;
+            const newSize = document.getElementById('editSize').value.trim();
+            const newBadge = document.getElementById('editBadge').value.trim();
+            const newDesc = document.getElementById('editDesc').value.trim();
+
+            const fileInput = document.getElementById('editImgFrontFile');
+            let newImgData = p.images?.front || p.images?.url;
+
+            if (fileInput.files && fileInput.files[0]) {
+                const uploaded = await compressAndReadFile(fileInput.files[0]);
+                if (uploaded) newImgData = uploaded;
+            }
+
+            p.title = newTitle;
+            p.price = newPrice;
+            p.size = newSize;
+            p.badge = newBadge;
+            p.description = newDesc;
+            p.images = { ...p.images, front: newImgData };
+
+            saveProductsToLocalCache();
+            renderProducts();
+            renderAdminProductsList();
+            closeEditProductModal();
+            showToast('Alterações salvas com sucesso!');
+
+            await pushUniversalCloudData();
+        };
+
+        window.saveStoreSettings = async function() {
+            const phone = document.getElementById('adminWhatsappInput').value.replace(/\D/g, '');
+            const ann = document.getElementById('adminAnnouncementInput').value.trim();
+            const newPass = document.getElementById('adminNewPasswordInput').value.trim();
+
+            if (phone.length < 10) {
+                showToast('Digite um número de WhatsApp válido com DDD.', 'error');
+                return;
+            }
+
+            storeSettings.whatsappPhone = phone;
+            localStorage.setItem('loja_cris_phone', phone);
+
+            if (ann) storeSettings.announcement = ann;
+            if (newPass) {
+                storeSettings.adminPassword = newPass;
+                localStorage.setItem('loja_cris_admin_password', newPass);
+                document.getElementById('adminNewPasswordInput').value = '';
+            }
+
+            updateHeaderAndFooter();
+            showToast('Configurações salvas e publicadas para todos!');
+
+            await pushUniversalCloudData();
+        };
+
+        // Export and Import Backup Data
+        window.exportBackupData = function() {
+            const customCats = categoriesList.filter(c => !c.isDefault);
+            const backup = {
+                products: products,
+                categories: customCats,
+                settings: storeSettings,
+                exportDate: new Date().toISOString()
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `backup_loja_by_cris_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+
+            showToast('Backup gerado e baixado com sucesso!');
+        };
+
+        window.importBackupData = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data && data.products && Array.isArray(data.products)) {
+                        products = data.products;
+                        if (data.settings) storeSettings = { ...storeSettings, ...data.settings };
+                        if (data.categories) {
+                            categoriesList = [...DEFAULT_CATEGORIES, ...data.categories.filter(c => !c.isDefault)];
+                        }
+
+                        saveProductsToLocalCache();
+                        renderCategories();
+                        renderAdminCategoriesList();
+                        updateNewCategoryOptions();
+                        renderProducts();
+                        renderAdminProductsList();
+                        updateHeaderAndFooter();
+
+                        await pushUniversalCloudData();
+                        showToast('Backup restaurado com sucesso!');
+                    } else {
+                        showToast('Arquivo de backup inválido.', 'error');
+                    }
+                } catch(err) {
+                    showToast('Erro ao ler o arquivo de backup.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        };
+    </script>
+</body>
+</html>
